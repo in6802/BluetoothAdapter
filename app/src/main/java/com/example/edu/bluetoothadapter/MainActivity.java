@@ -29,21 +29,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         listViewPairedDeviceList = findViewById(R.id.listView);
-        buttonShow = findViewById(R.id.buttonShow);
-        buttonShow.setOnClickListener(this);
+        findViewById(R.id.buttonShow).setOnClickListener(this);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();// db에서 데이터 가져와서 인스턴스 화
     }
 
     @Override
     public void onClick(View v) {
-        pairedDeviceList = bluetoothAdapter.getBondedDevices();// 리스트에 데이터 뿌려줌
+        pairedDeviceList = bluetoothAdapter.getBondedDevices();// 페어링된 기기 집합 가져옴
         ArrayList pairedList = new ArrayList();
-        for(BluetoothDevice bt:pairedDeviceList){
+        for(BluetoothDevice bt:pairedDeviceList){//bt가 리스트를 담고, 리스트 시작부터 끝까지 돌음.
             pairedList.add(bt.getName() + "\n" + bt.getAddress());
         }
         final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, pairedList);
-        listViewPairedDeviceList.setAdapter(adapter);
+        listViewPairedDeviceList.setAdapter(adapter);// 리스트에 데이터 뿌려줌
         listViewPairedDeviceList.setOnItemClickListener(this);
     }
 

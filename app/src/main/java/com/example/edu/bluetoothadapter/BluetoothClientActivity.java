@@ -29,12 +29,15 @@ public class BluetoothClientActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth_client);
 
-        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         address = getIntent().getStringExtra("device_address");
         new ConnectBluetoothTask().execute();// 생성하면서 메소드 호출
 
-        buttonLeft = findViewById(R.id.buttonLeft);
-        buttonLeft.setOnClickListener(this);
+        findViewById(R.id.buttonUp).setOnClickListener(this);
+        findViewById(R.id.buttonLeft).setOnClickListener(this);
+        findViewById(R.id.buttonCenter).setOnClickListener(this);
+        findViewById(R.id.buttonRight).setOnClickListener(this);
+        findViewById(R.id.buttonDown).setOnClickListener(this);
     }
 
     @Override
@@ -42,21 +45,37 @@ public class BluetoothClientActivity extends AppCompatActivity implements View.O
         if(!bluetoothSocket.isConnected())
             new ConnectBluetoothTask().execute();
 
+        String message = null;
         switch(view.getId())
         {
-            case R.id.buttonLeft:
-
-                try {
-                    bluetoothSocket.getOutputStream().write("L".getBytes());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            case R.id.buttonUp:
+                message = "U";
                 break;
+
+            case R.id.buttonLeft:
+                message = "L";
+                break;
+
+            case R.id.buttonCenter:
+                message = "C";
+                break;
+
+            case R.id.buttonRight:
+                message = "R";
+                break;
+
+            case R.id.buttonDown:
+                message = "D";
+                break;
+        }
+        try {
+            bluetoothSocket.getOutputStream().write(message.getBytes());//소켓 통신
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     private class ConnectBluetoothTask extends AsyncTask<Void, Void, Void> {
-
         private boolean ConnectSccess = true;
         protected void onPreExecute(){
             progressBar.setVisibility(View.VISIBLE);
@@ -64,10 +83,10 @@ public class BluetoothClientActivity extends AppCompatActivity implements View.O
         @Override
         protected Void doInBackground(Void... devices) {
             if(bluetoothSocket == null){
-                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();// DB에서 장치 리스트 가져옴
                 BluetoothDevice bluetoothDevice = bluetoothAdapter.getRemoteDevice(address);
                 try {
-                    bluetoothSocket = bluetoothDevice.createInsecureRfcommSocketToServiceRecord(myUUID);// 연결이 불가능하면 null값이 나옴
+                    bluetoothSocket = bluetoothDevice.createInsecureRfcommSocketToServiceRecord(myUUID);// 통신 연결. 연결 불가능하면 null값이 나옴
                     bluetoothAdapter.cancelDiscovery();
                     bluetoothSocket.connect();//pairing이 끝나면 connect
 

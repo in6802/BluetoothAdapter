@@ -6,4 +6,5 @@
     <string name="buttonLeft">Left</string>
     <string name="buttonCenter">Center</string>
     <string name="buttonRight">Right</string>
+    <string name="buttonDown">Down</string>
 </resources>
