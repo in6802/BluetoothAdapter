@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BluetoothAdapter</string>
+    <string name="textViewTitle">DeviceList</string>
+    <string name="buttonShow">list show</string>
+    <string name="buttonUp">UP</string>
+    <string name="buttonLeft">Left</string>
+    <string name="buttonCenter">Center</string>
+    <string name="buttonRight">Right</string>
+</resources>
